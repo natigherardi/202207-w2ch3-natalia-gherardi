@@ -1,0 +1,35 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <link rel="stylesheet" href="./Calculator.css" />
+    <script src="./Calculator.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="calculator">
+        <span id="calculatorScreen"></span>
+        <button id="AC" onclick="clearScreen()">AC</button>
+        <button onclick="deleteDigit()">DEL</button>
+        <button onclick="symbolButton('+')">+</button>
+        <button onclick="numericButton('7')">7</button>
+        <button onclick="numericButton('8')">8</button>
+        <button onclick="numericButton('9')">9</button>
+        <button onclick="symbolButton('-')">-</button>
+        <button onclick="numericButton('4')">4</button>
+        <button onclick="numericButton('5')">5</button>
+        <button onclick="numericButton('6')">6</button>
+        <button onclick="symbolButton('/')">/</button>
+        <button onclick="numericButton('1')">1</button>
+        <button onclick="numericButton('2')">2</button>
+        <button onclick="numericButton('3')">3</button>
+        <button onclick="symbolButton('*')">*</button>
+        <button onclick="numericButton('0')">0</button>
+        <button onclick="numericButton('.')">.</button>
+        <button id="equal" onclick="calculate(operationList)">=</button>
+      </div>
+    </div>
+  </body>
+</html>
