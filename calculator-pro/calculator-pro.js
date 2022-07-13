@@ -50,7 +50,7 @@ function sum() {}
 
 function isValidNumber(inputNumber) {
   return (
-    !isNaN(inputNumber) &&
+    !Number.isNaN(inputNumber) &&
     inputNumber !== "" &&
     inputNumber !== " " &&
     inputNumber !== null
