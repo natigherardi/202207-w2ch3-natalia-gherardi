@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
 const questions1 = [
   {
     letter: "a",
@@ -617,12 +619,16 @@ const chooseRandomQuestions = () => {
       return questions2;
     case 3:
       return questions3;
+    default:
+      return chooseRandomQuestions();
   }
 };
-const pasapalabra = (listOfQuestionsUnanswered) => {
+
+const pasapalabra = (listOfQuestions) => {
   let pointsCounter = 0;
+  let listOfQuestionsUnanswered;
   do {
-    for (const palabra of listOfQuestionsUnanswered) {
+    for (const palabra of listOfQuestions) {
       const wordEntered = prompt(palabra.question).toLowerCase();
       if (wordEntered === "end") {
         return { pasapalabraCompleted: false, points: pointsCounter };
@@ -637,7 +643,7 @@ const pasapalabra = (listOfQuestionsUnanswered) => {
         palabra.wordStatus = 2;
       }
     }
-    listOfQuestionsUnanswered = listOfQuestionsUnanswered.filter(
+    listOfQuestionsUnanswered = listOfQuestions.filter(
       (letter) => letter.wordStatus === 0
     );
     if (listOfQuestionsUnanswered.length > 0) {
@@ -660,6 +666,7 @@ const countPointsAndShowRanking = (dataResult, name) => {
   }
 };
 const playAgain = (name) => {
+  // eslint-disable-next-line no-restricted-globals
   const answer = confirm(`Quieres jugar de nuevo ${name}?`);
   return answer;
 };
