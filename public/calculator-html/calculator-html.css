@@ -23,7 +23,6 @@
   grid-template-columns: repeat(4, 66px);
   justify-items: center;
   align-items: center;
-  padding: 30;
 }
 
 #calculatorScreen {
