@@ -1,12 +1,11 @@
-//chrome test chnges//
 let bingoCard;
-let numbersPerLine = 5;
+const numbersPerLine = 5;
 let calledNumbers = [];
 let counter = 0;
 let nameOfPlayer;
 let lineMatched = false;
 let lineCounter;
-let ranking = [
+const ranking = [
   { playerName: "Maximus", playerPoints: 100 },
   { playerName: "Mr. Fail", playerPoints: 15 },
 ];
@@ -27,7 +26,7 @@ const endGame = () => {
 };
 const getNumbers = (numbersPerLine) => {
   bingoCard = [];
-  let randomBingoNumbers = [];
+  const randomBingoNumbers = [];
   do {
     const newRandomNumber = Math.floor(Math.random() * (20 - 1) + 1);
     if (!randomBingoNumbers.includes(newRandomNumber)) {
@@ -35,7 +34,7 @@ const getNumbers = (numbersPerLine) => {
     }
   } while (randomBingoNumbers.length < 15);
   for (let i = 0; i < randomBingoNumbers.length; i += numbersPerLine) {
-    let line = randomBingoNumbers.slice(i, i + numbersPerLine);
+    const line = randomBingoNumbers.slice(i, i + numbersPerLine);
     bingoCard.push(line);
   }
   console.table(bingoCard);
@@ -57,7 +56,7 @@ const chooseCard = () => {
 };
 
 const bingoCaller = () => {
-  let calledNumber = Math.floor(Math.random() * (20 - 1) + 1);
+  const calledNumber = Math.floor(Math.random() * (20 - 1) + 1);
   if (calledNumbers.includes(calledNumber)) {
     bingoCaller();
     return;
@@ -68,7 +67,7 @@ const bingoCaller = () => {
   for (let i = 0; i < bingoCard.length; i++) {
     if (bingoCard[i].includes(calledNumber)) {
       console.log(`Congratulations! You matched number ${calledNumber}`);
-      let indexOfCalledNumber = bingoCard[i].indexOf(calledNumber);
+      const indexOfCalledNumber = bingoCard[i].indexOf(calledNumber);
       bingoCard[i][indexOfCalledNumber] = "X";
       console.table(bingoCard);
       break;
@@ -100,23 +99,18 @@ const checkLine = () => {
 const askNewTurn = () => {
   const playAgain = confirm("Do you want another turn?");
   playAgain ? bingoCaller() : askNewGame();
-  return;
 };
 
 const askNewGame = () => {
-  let newGame = confirm("Do you want to play again?");
+  const newGame = confirm("Do you want to play again?");
   newGame ? bingoStart() : endGame();
-  return;
 };
 const pointsCounterAndShowRanking = () => {
-  let points = 115 - counter;
+  const points = 115 - counter;
   ranking.push({ playerName: nameOfPlayer, playerPoints: points });
-  ranking.sort((a, b) => {
-    return b.playerPoints - a.playerPoints;
-  });
+  ranking.sort((a, b) => b.playerPoints - a.playerPoints);
   console.log("These are the top players:");
   console.table(ranking);
-  return;
 };
 
 const bingoStart = () => {
