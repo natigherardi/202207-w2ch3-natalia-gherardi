@@ -1,23 +1,26 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
 let flights = [
-  { id: 00, to: "Bilbao", from: "Barcelona", cost: 1600, scale: false },
+  { id: 0, to: "Bilbao", from: "Barcelona", cost: 1600, scale: false },
 
-  { id: 01, to: "New York", from: "Barcelona", cost: 700, scale: false },
+  { id: 1, to: "New York", from: "Barcelona", cost: 700, scale: false },
 
-  { id: 02, to: "Los Angeles", from: "Madrid", cost: 1100, scale: true },
+  { id: 2, to: "Los Angeles", from: "Madrid", cost: 1100, scale: true },
 
-  { id: 03, to: "Paris", from: "Barcelona", cost: 210, scale: false },
+  { id: 3, to: "Paris", from: "Barcelona", cost: 210, scale: false },
 
-  { id: 04, to: "Roma", from: "Barcelona", cost: 150, scale: false },
+  { id: 4, to: "Roma", from: "Barcelona", cost: 150, scale: false },
 
-  { id: 05, to: "London", from: "Madrid", cost: 200, scale: false },
+  { id: 5, to: "London", from: "Madrid", cost: 200, scale: false },
 
-  { id: 06, to: "Madrid", from: "Barcelona", cost: 90, scale: false },
+  { id: 6, to: "Madrid", from: "Barcelona", cost: 90, scale: false },
 
-  { id: 07, to: "Tokyo", from: "Madrid", cost: 1500, scale: true },
+  { id: 7, to: "Tokyo", from: "Madrid", cost: 1500, scale: true },
 
-  { id: 08, to: "Shangai", from: "Barcelona", cost: 800, scale: true },
+  { id: 8, to: "Shangai", from: "Barcelona", cost: 800, scale: true },
 
-  { id: 09, to: "Sydney", from: "Barcelona", cost: 150, scale: true },
+  { id: 9, to: "Sydney", from: "Barcelona", cost: 150, scale: true },
 
   { id: 10, to: "Tel-Aviv", from: "Madrid", cost: 150, scale: false },
 ];
@@ -47,16 +50,14 @@ const showFlights = () => {
   );
 };
 const average = () => {
-  const summ = flights.reduce((a, flight) => {
-    return a + flight.cost;
-  }, 0);
+  const summ = flights.reduce((a, flight) => a + flight.cost, 0);
   console.log(
     `The average cost of the flights is $ ${(summ / flights.length).toFixed(2)}`
   );
 };
 const showLastFlights = () => {
   const lastFlights = flights.slice(-5);
-  let lastDestinations = lastFlights.map((lastFlights) => lastFlights.to);
+  const lastDestinations = lastFlights.map((finalFlights) => finalFlights.to);
   console.log(`The destination of the last flights are: ${lastDestinations}`);
 };
 const askForRole = () => {
@@ -65,26 +66,25 @@ const askForRole = () => {
     askForRole();
   } else if (role.toLowerCase() !== "admin" && role.toLowerCase() !== "user") {
     askForRole();
-  } else {
-    return (roleAction = role.toLowerCase());
   }
-};
-const adminAction = () => {
-  let adminAnswer;
-  do {
-    adminAnswer = prompt(
-      `Do you want to create (enter "create") or delete (enter "delete") a flight? If you want to leave, enter "end"`
-    ).toLowerCase();
-    if (adminAnswer === "create") {
-      createFlights();
-    } else if (adminAnswer === "delete") {
-      deleteFlights();
-    } else if (adminAnswer !== "end") {
-      adminAction();
-    }
-  } while (adminAnswer !== "end");
+  roleAction = role.toLowerCase();
+  return roleAction;
 };
 
+const deleteFlights = () => {
+  let idEntered = +prompt(
+    "Enter the ID of the flight you want to delete or press cancel"
+  );
+  while (idEntered > flights.length) {
+    idEntered = +prompt(
+      "Error. You introduced an invalid ID number. Try again"
+    );
+  }
+  const newFlights = flights.filter((flight) => flight.id !== idEntered);
+  console.table(newFlights);
+  flights = newFlights;
+  return flights;
+};
 const createFlights = () => {
   const newFlight = {};
   newFlight.id = flights.length;
@@ -108,7 +108,7 @@ const createFlights = () => {
     flights.push(newFlight);
     console.table(flights);
   } else {
-    let result = confirm(
+    const result = confirm(
       "Error. There are over 15 flights already. Do you want to delete flights?"
     );
     if (result === true) {
@@ -129,35 +129,36 @@ const createFlights = () => {
   }
   console.table(flights);
 };
-const deleteFlights = () => {
-  let idEntered = +prompt(
-    "Enter the ID of the flight you want to delete or press cancel"
-  );
-  while (idEntered > flights.length) {
-    idEntered = +prompt(
-      "Error. You introduced an invalid ID number. Try again"
-    );
-  }
-  let newFlights = flights.filter((flight) => flight.id !== idEntered);
-  console.table(newFlights);
-  return (flights = newFlights);
-};
 
+const adminAction = () => {
+  let adminAnswer;
+  do {
+    adminAnswer = prompt(
+      `Do you want to create (enter "create") or delete (enter "delete") a flight? If you want to leave, enter "end"`
+    ).toLowerCase();
+    if (adminAnswer === "create") {
+      createFlights();
+    } else if (adminAnswer === "delete") {
+      deleteFlights();
+    } else if (adminAnswer !== "end") {
+      adminAction();
+    }
+  } while (adminAnswer !== "end");
+};
 const userAction = () => {
   const searchFlights = () => {
     let priceSearched = +prompt("What's your budget?");
-    if (isNaN(priceSearched) || priceSearched === null) {
+    if (Number.isNaN(priceSearched) || priceSearched === null) {
       priceSearched = +prompt("Enter a valid number. What's your budget?");
     }
     return flights.filter((flight) => flight.cost <= priceSearched);
   };
   const flightsSearched = searchFlights();
-  const boughtFlight = chooseFlight(flightsSearched);
 
   const chooseFlight = (availableFlights) => {
     console.log(`These are the flights that match your search:`);
     console.table(availableFlights);
-    let idEntered = +prompt("Enter the ID of the flight you want to buy");
+    const idEntered = +prompt("Enter the ID of the flight you want to buy");
     const flightToBuy = availableFlights.find(
       (flight) => flight.id === idEntered
     );
@@ -166,6 +167,8 @@ const userAction = () => {
     }
     return flightToBuy;
   };
+  const boughtFlight = chooseFlight(flightsSearched);
+
   console.log(
     `Congratulations! You bought the flight ${boughtFlight.id}. Get your bags ready, you are going to ${boughtFlight.to}!`
   );
