@@ -1,3 +1,7 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
 let bingoCard;
 const numbersPerLine = 5;
 let calledNumbers = [];
@@ -24,7 +28,24 @@ const greetAndRules = () => {
 const endGame = () => {
   console.log("Thank's for playing, bye!");
 };
-const getNumbers = (numbersPerLine) => {
+const pointsCounterAndShowRanking = () => {
+  const points = 115 - counter;
+  ranking.push({ playerName: nameOfPlayer, playerPoints: points });
+  ranking.sort((a, b) => b.playerPoints - a.playerPoints);
+  console.log("These are the top players:");
+  console.table(ranking);
+};
+const bingoStart = () => {
+  calledNumbers = [];
+  counter = 0;
+  nameOfPlayer = "";
+  lineMatched = false;
+  askName();
+  greetAndRules();
+  getNumbers(numbersPerLine);
+};
+
+const getNumbers = (amountOfNumbers) => {
   bingoCard = [];
   const randomBingoNumbers = [];
   do {
@@ -33,26 +54,13 @@ const getNumbers = (numbersPerLine) => {
       randomBingoNumbers.push(newRandomNumber);
     }
   } while (randomBingoNumbers.length < 15);
-  for (let i = 0; i < randomBingoNumbers.length; i += numbersPerLine) {
-    const line = randomBingoNumbers.slice(i, i + numbersPerLine);
+  for (let i = 0; i < randomBingoNumbers.length; i += amountOfNumbers) {
+    const line = randomBingoNumbers.slice(i, i + amountOfNumbers);
     bingoCard.push(line);
   }
   console.table(bingoCard);
+  // eslint-disable-next-line no-use-before-define
   chooseCard();
-};
-const chooseCard = () => {
-  let userAnswer;
-  do {
-    userAnswer = prompt("Do you want to play with this card? yes/no");
-  } while (
-    !userAnswer ||
-    (userAnswer.toLowerCase() !== "yes" && userAnswer.toLowerCase() !== "no")
-  );
-  if (userAnswer.toLowerCase() === "yes") {
-    bingoCaller();
-  } else {
-    getNumbers(numbersPerLine);
-  }
 };
 
 const bingoCaller = () => {
@@ -75,12 +83,34 @@ const bingoCaller = () => {
   }
   checkLine();
 };
+
+const askNewTurn = () => {
+  const playAgain = confirm("Do you want another turn?");
+  if (playAgain) {
+    bingoCaller();
+  }
+  askNewGame();
+};
+const chooseCard = () => {
+  let userAnswer;
+  do {
+    userAnswer = prompt("Do you want to play with this card? yes/no");
+  } while (
+    !userAnswer ||
+    (userAnswer.toLowerCase() !== "yes" && userAnswer.toLowerCase() !== "no")
+  );
+  if (userAnswer.toLowerCase() === "yes") {
+    bingoCaller();
+  } else {
+    getNumbers(numbersPerLine);
+  }
+};
 const checkLine = () => {
-  let checkLine;
+  let lineChecked;
   lineCounter = 0;
   for (let i = 0; i < bingoCard.length; i++) {
-    checkLine = bingoCard[i].every((check) => check === "X");
-    if (checkLine) {
+    lineChecked = bingoCard[i].every((check) => check === "X");
+    if (lineChecked) {
       lineCounter++;
     }
   }
@@ -96,29 +126,11 @@ const checkLine = () => {
     askNewTurn();
   }
 };
-const askNewTurn = () => {
-  const playAgain = confirm("Do you want another turn?");
-  playAgain ? bingoCaller() : askNewGame();
-};
-
 const askNewGame = () => {
   const newGame = confirm("Do you want to play again?");
-  newGame ? bingoStart() : endGame();
-};
-const pointsCounterAndShowRanking = () => {
-  const points = 115 - counter;
-  ranking.push({ playerName: nameOfPlayer, playerPoints: points });
-  ranking.sort((a, b) => b.playerPoints - a.playerPoints);
-  console.log("These are the top players:");
-  console.table(ranking);
-};
-
-const bingoStart = () => {
-  calledNumbers = [];
-  counter = 0;
-  nameOfPlayer = "";
-  (lineMatched = false), askName();
-  greetAndRules();
-  getNumbers(numbersPerLine);
+  if (newGame) {
+    bingoStart();
+  }
+  endGame();
 };
 bingoStart();
